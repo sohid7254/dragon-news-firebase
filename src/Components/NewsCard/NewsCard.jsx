@@ -2,9 +2,10 @@ import { FaRegEye, FaStar } from "react-icons/fa";
 import { format } from "date-fns";
 import { LuBookmark } from "react-icons/lu";
 import { IoShareSocialOutline } from "react-icons/io5";
+import { Link } from "react-router";
 
 const NewsCard = ({ news }) => {
-    const { title, author, rating, total_view, thumbnail_url, details, tags } = news;
+    const {id, title, author, rating, total_view, thumbnail_url, details, tags } = news;
 
     const formattedDate = format(new Date(author.published_date), "yyyy-MM-dd");
 
@@ -44,7 +45,9 @@ const NewsCard = ({ news }) => {
                 {details.length > 200 ? (
                     <>
                         {details.slice(0, 200)}...
-                        <span className="text-orange-500 font-semibold cursor-pointer hover:underline">Read More</span>
+                        <Link to={`/news-details/${id}`} className="text-orange-500 font-semibold cursor-pointer hover:underline">
+                            Read More
+                        </Link>
                     </>
                 ) : (
                     details
