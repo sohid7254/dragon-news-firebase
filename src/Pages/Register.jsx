@@ -1,21 +1,39 @@
-import React, { use } from "react";
-import { Link } from "react-router";
+import React, { use, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Provider/AuthProvider";
 
 const Register = () => {
-    const {setUser, creatUser} = use(AuthContext)
+    const {setUser, creatUser, updateUser} = use(AuthContext)
+    const [nameError, setNameError] = useState("")
+
+    const navigate = useNavigate()
+
     const handleRegister = (event) => {
+        
         event.preventDefault();
         const form = event.target;
         const name = form.name.value;
+        if(name.length < 5){
+            setNameError("Name Should Be more than 5 charecter")
+            return
+        }else {
+            setNameError("")
+        }
         const photo = form.photo.value;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(name, photo, email, password)
+        // console.log(name, photo, email, password)
         creatUser(email, password)
         .then(result => {
             const user = result.user;
-            setUser(user)
+            updateUser({displayName:name, photoUrl: photo}).then(() => {
+                setUser({ ...user, displayName: name, photoUrl: photo });
+                navigate("/")
+            }).catch ((error) => {
+                console.log(error)
+                setUser(user)
+            })
+            
         })
         .catch( error => {
             const errorMessage = error.message;
@@ -35,6 +53,9 @@ const Register = () => {
                         {/* Name */}
                         <label className="font-bold">Your Name</label>
                         <input type="text" required name="name" className="input" placeholder="Enter your email address" />
+                        {
+                            nameError && <p className="font-semibold text-red-400">{nameError}</p>
+                        }
                         {/* Photo Url */}
                         <label className="font-bold">Photo Url</label>
                         <input type="text" required name="photo" className="input" placeholder="Enter your email address" />

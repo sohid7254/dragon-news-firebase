@@ -7,7 +7,7 @@ const Navbar = () => {
     const { user, logOut } = use(AuthContext);
 
     const handleLogOut = () => {
-        console.log("user trying to log out");
+        // console.log("user trying to log out");
         logOut()
         .then(() => {
             alert("You Have Successfully Log Out")
@@ -26,7 +26,7 @@ const Navbar = () => {
                 <NavLink to={"/career"}>Career</NavLink>
             </div>
             <div className="login-btn flex gap-3">
-                <img src={user2} alt="" />
+                <img className="w-12 rounded-full" src={`${user ? user.photoUrl: user2}`} alt="" />
                 {user ? (
                     <button onClick={handleLogOut} className="btn btn-primary px-8">
                         Log Out

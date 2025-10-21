@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 export const AuthContext = createContext();
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import app from '../Firebase/firebase.config';
 import { CgPassword } from 'react-icons/cg';
 
@@ -11,7 +11,7 @@ const auth = getAuth(app);
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
-    console.log(loading, user)
+    // console.log(loading, user)
     const creatUser = (email, password) => {
         setLoading(true)
         return createUserWithEmailAndPassword(auth, email, password)
@@ -21,6 +21,10 @@ const AuthProvider = ({children}) => {
         setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
+
+    const updateUser = (updatedData) =>{
+        return updateProfile(auth.currentUser, updatedData)
+    } 
 
     const logOut = () => {
         return signOut(auth)
@@ -44,6 +48,7 @@ const AuthProvider = ({children}) => {
         signIn,
         loading,
         setLoading,
+        updateUser,
     }
     
     
